@@ -21,19 +21,19 @@ class Cell
 
 	// Methods
 	public function returnCellNumber() {
-		echo $this->cellNumber;
+		return $this->cellNumber;
 	}
 
 	public function returnAdjacentCellsArray() {
-		echo $this->adjacentCells;
+		return $this->adjacentCells;
 	}
 
-	public function setCellNumber() {
-		echo $this->adjacentCells;
+	public function setCellNumber($num) {
+		$this->adjacentCells = $num;
 	}
 
-	public function setAdjacentCellsArray() {
-		echo $this->adjacentCells;
+	public function setAdjacentCellsArray($adjCellArr) {
+		$this->adjacentCells = $adjCellArr;
 	}
 
 }

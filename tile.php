@@ -29,23 +29,47 @@ class Tile
 
 	// Methods
 	public function returnCellArray() {
-		echo $this->cellNumber;
+		return $this->cellNumber;
+	}
+
+	public function returnAvoidCellArray() {
+		return $this->avoidCellArray;
 	}
 
 	public function returnTilePosition() {
-		echo $this->adjacentCells;
+		return $this->adjacentCells;
 	}
 
 	public function returnSize() {
-		echo $this->size;
+		return $this->size;
 	}
 
-	public function setCellArray() {
-		echo $this->adjacentCells;
+	public function returnStartCell() {
+		return $this->startCell;
 	}
 
-	public function setTilePosition() {
-		echo $this->adjacentCells;
+	public function returnEndCell() {
+		return $this->endCell;
+	}
+
+	public function setCellArray($cellArr) {
+		$this->cellArray = $cellArr;
+	}
+
+	public function setAvoidCellArray($avoidCellArr) {
+		$this->avoidCellArray = $avoidCellArr;
+	}
+
+	public function setTilePosition($tilePos) {
+		$this->tilePosition = $tilePos;
+	}
+
+	public function setStartCell($startPos) {
+		$this->startCell = $startPos;
+	}
+
+	public function setEndCell($endPos) {
+		$this->endCell = $endPos;
 	}
 
 }
