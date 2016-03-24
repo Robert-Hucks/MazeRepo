@@ -15,24 +15,73 @@ class Maze
 	// Constructor
 	function __construct($numOfTiles, $sizeOfTile){
 		for ($i = 0; $i < $numOfTiles; $i++) {
-			addNewtileToArray(createTile($sizeOfTile, $i));
+	
+			self::createTile($sizeOfTile, $i);
+		
 		}
 	}
 
 
 	// Methods
 	private function createTile($size, $pos) {
-		return "testing... [" . $size . " / " . $pos . "]";
+		$avoidCellArray = [];
+		$tilePosition = $pos;
+		$startCell = 0;
+		$endCell = 0;
+		$this->tileArray[] = new Tile ($avoidCellArray, $tilePosition, $size, $startCell, $endCell);
 	}
 
 	private function addNewTileToArray($tile) {
 		$this->tileArray[] = $tile;
 	}
 
+	public function dumpTileArray() {
+		print "<pre>";
+		print_r($this->tileArray);
+		print "</pre>";
+	}
+
 	public function returnTileArray() {
-		var_dump($tileArray);
+		
+		echo "<div style='width:1000px;'>";
+
+		foreach($this->tileArray as $selectedTile){
+
+			foreach($selectedTile->returnCellArray() as $selectedTileCellArray){
+
+				foreach($selectedTileCellArray as $selectedTileCell) {
+
+					$selectedTileCellPosition = $selectedTileCell->returnCellPos();
+
+					echo "<div style='width:250px;float:left;'>Pos: " . $selectedTileCellPosition->returnRow() . "/" . $selectedTileCellPosition->returnCol() . "</br>";
+
+
+					$selectedTileCellAdjacents = $selectedTileCell->returnAdjacentCellsArray();
+
+					echo "Joins to: ";
+
+					foreach($selectedTileCellAdjacents as $adjCell){
+						$adjCellPos = $adjCell->returnCellPos();
+						print_r($adjCellPos);
+					}
+
+					echo "</div>";
+
+					if ($selectedTileCellPosition->returnCol() == 3) {
+						echo "</div></br'><hr style='clear:both;></br><div style='width:400px;'>";
+					}
+				}
+
+			}
+
+		}
+
+		echo "</div>";
+
 	}
 
 }
+
+echo "Maze class imported</br>";
 
 ?>

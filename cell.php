@@ -8,28 +8,29 @@ class Cell
 {
 
 	// Properties
-	private $cellNumber;
+	private $cellPos;
 	private $adjacentCells = [];
 
 
 	// Constructor
-	function __construct($cellNum, $adjCellArray){
-		$this->cellNumber = $cellNum;
-		$this->adjacentCells = $adjCellArray;
+	function __construct($row, $col){
+		$this->cellPos = new Position ($row, $col);
+		//$this->adjacentCells = $adjCellArr;
 	}
 
 
 	// Methods
-	public function returnCellNumber() {
-		return $this->cellNumber;
+	public function returnCellPos() {
+		return $this->cellPos;
 	}
 
 	public function returnAdjacentCellsArray() {
 		return $this->adjacentCells;
 	}
 
-	public function setCellNumber($num) {
-		$this->adjacentCells = $num;
+	public function setCellPos($newRow, $newCol) {
+		$this->cellPos->setRow($newRow);
+		$this->cellPos->setCol($newCol);
 	}
 
 	public function setAdjacentCellsArray($adjCellArr) {
@@ -37,5 +38,7 @@ class Cell
 	}
 
 }
+
+echo "Cell class imported</br>";
 
 ?>
