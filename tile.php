@@ -108,11 +108,12 @@ class Tile
 			if (in_array($adjCellArr[$x]->returnCellPos(), $this->avoidCellArray)) {
 
 				unset($adjCellArr[$x]);
-				$adjCellArr = array_values($adjCellArr);
 
 			}
 
 		}
+
+		$adjCellArr = array_values($adjCellArr);
 
 		// Remove any cells on the avoidance list and send the remaining to the cells setAdjacentCellsArray() method.
 		$ref->setAdjacentCellsArray($adjCellArr);
