@@ -13,18 +13,18 @@ class Maze
 
 
 	// Constructor
-	function __construct($numOfTiles, $sizeOfTile){
+	function __construct($numOfTiles, $sizeOfTile, $avoidCellsCompleteArr){
 		for ($i = 0; $i < $numOfTiles; $i++) {
 	
-			self::createTile($sizeOfTile, $i);
+			self::createTile($sizeOfTile, $i, $avoidCellsCompleteArr[$i]);
 		
 		}
 	}
 
 
 	// Methods
-	private function createTile($size, $pos) {
-		$avoidCellArray = [];
+	private function createTile($size, $pos, $avoidCells) {
+		$avoidCellArray = $avoidCells; // Contains an array that holds value pairs, also held in arrays
 		$tilePosition = $pos;
 		$startCell = 0;
 		$endCell = 0;

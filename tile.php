@@ -18,7 +18,7 @@ class Tile
 
 	// Constructor
 	function __construct($avoidCellArr, $tilePos, $tileSize, $sCell, $eCell){
-		$this->avoidCellArray = $avoidCellArr;
+		$this->avoidCellArray = self::convertToPositionArray($avoidCellArr); // Contains the cell positions to avoid in arrays
 		$this->tilePosition = $tilePos;
 		$this->size = $tileSize;
 		$this->startCell = $sCell;
@@ -42,20 +42,22 @@ class Tile
 				$cellPos = $cellRef->returnCellPos();
 				$cellRow = $cellPos->returnRow();
 				$cellCol = $cellPos->returnCol();
-				self::CalcAdjCells($cellRow, $cellCol, $cellRef);
+				self::calcAdjCells($cellRow, $cellCol, $cellRef);
 
 			}
 			
 		}
-		//$adjCellArray = self::CalcAdjCells($i, $j);
+		
+		//self::GenerateRoute();
 	}
 
 
 	// Methods
-	private function CalcAdjCells($row, $col, $ref) {
+	private function calcAdjCells($row, $col, $ref) {
 		// Case statement to work out what ~valid~ cells are around. (remove cells to avoid at the end of this process.)
 		$adjCellArr = [];
 		
+		// Vertical cells
 		switch ($row) {
 			case 0:
 				
@@ -75,18 +77,59 @@ class Tile
 
 		}
 
-		// echo "Row: " . $row . "\nCol: " . $col . "</br>";
-		// print "<pre>";
-		// var_dump($adjCellArr);
-		// print "</pre>";
+		// Horizontal cells
+		switch ($col) {
+			case 0:
+				
+				$adjCellArr[] = $this->cellArray[$row][$col+1]; // Right
+				break;
+
+			case ($this->size)-1:
+
+				$adjCellArr[] = $this->cellArray[$row][$col-1]; // Left
+				break;
+
+			default:
+				
+				$adjCellArr[] = $this->cellArray[$row][$col-1]; // Left
+				$adjCellArr[] = $this->cellArray[$row][$col+1]; // Right
+				break;
+
+		}
 
 		// $adjCellArr[] = $this->cellArray[$row-1][$col]; // Above
 		// $adjCellArr[] = $this->cellArray[$row+1][$col]; // Below
 		// $adjCellArr[] = $this->cellArray[$row][$col-1]; // Left
 		// $adjCellArr[] = $this->cellArray[$row][$col+1]; // Right
 
+
+		for ($x = 0; $x < count($adjCellArr); $x++) {
+
+			if (in_array($adjCellArr[$x]->returnCellPos(), $this->avoidCellArray)) {
+
+				unset($adjCellArr[$x]);
+				$adjCellArr = array_values($adjCellArr);
+
+			}
+
+		}
+
+		// Remove any cells on the avoidance list and send the remaining to the cells setAdjacentCellsArray() method.
 		$ref->setAdjacentCellsArray($adjCellArr);
 
+	}
+
+	private function convertToPositionArray($arr) {
+
+		$newArr = [];
+
+		foreach ($arr as $coords) {
+
+			$newArr[] = new Position ($coords[0], $coords[1]);
+
+		}
+
+		return $newArr;
 	}
 
 	public function returnCellArray() {

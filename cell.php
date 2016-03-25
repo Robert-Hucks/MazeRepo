@@ -9,7 +9,8 @@ class Cell
 
 	// Properties
 	private $cellPos;
-	private $adjacentCells = [];
+	private $adjacentCells = []; // Any cell that is N/E/S/W of it
+	private $exits = []; // Any cells that it actually joins to
 
 
 	// Constructor
@@ -26,6 +27,10 @@ class Cell
 
 	public function returnAdjacentCellsArray() {
 		return $this->adjacentCells;
+	}
+
+	public function returnExitArray() {
+		return $this->exits;
 	}
 
 	public function setCellPos($newRow, $newCol) {
