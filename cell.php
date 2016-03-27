@@ -10,13 +10,14 @@ class Cell
 	// Properties
 	private $cellPos;
 	private $adjacentCells = []; // Any cell that is N/E/S/W of it
-	private $exits = []; // Any cells that it actually joins to
+	private $exits = ""; // String of directions pointing to cells that it connects to. eg. NE would be a for connecting to a cell above and to the right.
+	private $avoid;
 
 
 	// Constructor
-	function __construct($row, $col){
+	function __construct($row, $col, $avoidStatus){
 		$this->cellPos = new Position ($row, $col);
-		//$this->adjacentCells = $adjCellArr;
+		$this->avoid = $avoidStatus;
 	}
 
 
@@ -29,8 +30,12 @@ class Cell
 		return $this->adjacentCells;
 	}
 
-	public function returnExitArray() {
+	public function returnExits() {
 		return $this->exits;
+	}
+
+	public function returnAvoid() {
+		return $this->avoid;
 	}
 
 	public function setCellPos($newRow, $newCol) {
@@ -42,6 +47,25 @@ class Cell
 		$this->adjacentCells = $adjCellArr;
 	}
 
+	public function setExits($exitString) {
+		$this->exits = $exitString;
+		self::reorderDirs();
+	}
+
+	public function addExits($exitString) {
+		$this->exits .= $exitString;
+		self::reorderDirs();
+	}
+
+	public function setAvoid($bool) {
+		$this->avoid = $bool;
+	}
+
+	private function reorderDirs() {
+		$stringParts = str_split($this->exits);
+		sort($stringParts);
+		$this->exits = implode("", $stringParts);
+	}
 }
 
 echo "Cell class imported</br>";

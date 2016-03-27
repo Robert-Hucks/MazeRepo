@@ -13,23 +13,34 @@ class Tile
 	private $size; // All tiles are equal in height and width.
 	private $startCell; // Reference to index of $cellArray for starting position
 	private $endCell; // Reference to index of $cellArray for ending position
+	private $generatedWith;
 	
 
 
 	// Constructor
-	function __construct($avoidCellArr, $tilePos, $tileSize, $sCell, $eCell){
+	function __construct($avoidCellArr, $tilePos, $tileSize, $sCell, $eCell, $methodToCreate){
 		$this->avoidCellArray = self::convertToPositionArray($avoidCellArr); // Contains the cell positions to avoid in arrays
 		$this->tilePosition = $tilePos;
 		$this->size = $tileSize;
 		$this->startCell = $sCell;
 		$this->endCell = $eCell;
+		$this->generatedWith = $methodToCreate;
+
 
 		for ($i = 0; $i < $this->size; $i++) { //height of Tile (Row)
 
 			for ($j = 0; $j < $this->size; $j++ ) { //width of Tile (Column)
 
 				// Create the Cell object
-				$this->cellArray[$i][$j] = new Cell($i, $j);
+				$avoidStatus = false;
+				$tempPos = new Position($i, $j);
+
+
+				if (in_array($tempPos, $this->avoidCellArray)) {
+					$avoidStatus = true;
+				}
+
+				$this->cellArray[$i][$j] = new Cell($i, $j, $avoidStatus);
 
 			}
 		}
@@ -48,7 +59,7 @@ class Tile
 			
 		}
 		
-		//self::GenerateRoute();
+		self::GenerateRoute();
 	}
 
 
@@ -95,27 +106,19 @@ class Tile
 				$adjCellArr[] = $this->cellArray[$row][$col+1]; // Right
 				break;
 
-		}
-
-		// $adjCellArr[] = $this->cellArray[$row-1][$col]; // Above
-		// $adjCellArr[] = $this->cellArray[$row+1][$col]; // Below
-		// $adjCellArr[] = $this->cellArray[$row][$col-1]; // Left
-		// $adjCellArr[] = $this->cellArray[$row][$col+1]; // Right
-
+		}		
 
 		for ($x = 0; $x < count($adjCellArr); $x++) {
 
-			if (in_array($adjCellArr[$x]->returnCellPos(), $this->avoidCellArray)) {
+			if ($adjCellArr[$x]->returnAvoid() == 1) {
 
 				unset($adjCellArr[$x]);
 
 			}
-
 		}
 
 		$adjCellArr = array_values($adjCellArr);
 
-		// Remove any cells on the avoidance list and send the remaining to the cells setAdjacentCellsArray() method.
 		$ref->setAdjacentCellsArray($adjCellArr);
 
 	}
@@ -124,13 +127,62 @@ class Tile
 
 		$newArr = [];
 
+		
+
 		foreach ($arr as $coords) {
 
-			$newArr[] = new Position ($coords[0], $coords[1]);
+			if (!empty($coords)){
+
+				$newArr[] = new Position ($coords[0], $coords[1]);
+
+			}
 
 		}
 
+		
+
 		return $newArr;
+	}
+
+	private function GenerateRoute() {
+
+		switch ($this->generatedWith) {
+			case '1':
+				// Growing Tree Algorithm
+
+				$cellPool = [];
+				$complete = false;
+
+				// Select a single cell at random to start from
+				$cellPool[] = $this->cellArray[mt_rand(0, $this->size - 1)][mt_rand(0, $this->size - 1)];
+
+				while (count($cellPool) < count($this->cellArray)) {
+					
+					$currentCell = end($cellPool); // Take last cell added
+
+					$currentAdjCells = $currentCell->returnAdjacentCellsArray(); // Get list of adjacent cells
+
+					$randAdjCellIndex = mt_rand(0, count($currentAdjCells) - 1);
+					$chosenAdjCell = $currentAdjCells[$randAdjCellIndex]; // Pick random adjacent cell
+
+					while (in_array($chosenAdjCell, $cellPool)) {
+						unset($currentAdjCells[$randAdjCellIndex]);
+						$currentAdjCells = array_values($currentAdjCells);
+						$randAdjCellIndex = mt_rand(0, count($currentAdjCells) - 1);
+						$chosenAdjCell = $currentAdjCells[$randAdjCellIndex]; // Pick another random adjacent cell
+					}
+					
+					$currentCell->addExits(Position::calcDirection($currentCell->returnCellPos(), $chosenAdjCell->returnCellPos())); // Get the direction of exit and pass it to the selected cell.
+					$chosenAdjCell->addExits(Position::OppDir(Position::calcDirection($currentCell->returnCellPos(), $chosenAdjCell->returnCellPos())));
+
+					$cellPool[] = $chosenAdjCell; // Add the chosen cell to the cell pool.
+
+				}
+
+				break;
+			
+		}
+
 	}
 
 	public function returnCellArray() {
