@@ -66,6 +66,14 @@ class Cell
 		sort($stringParts);
 		$this->exits = implode("", $stringParts);
 	}
+
+	static function displayPositionOnly($arr) {
+		print "<pre>";
+		foreach($arr as $item) {
+			print_r($item->returnCellPos());
+		}
+		print "</pre>";
+	}
 }
 
 echo "Cell class imported</br>";

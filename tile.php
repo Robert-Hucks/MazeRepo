@@ -147,35 +147,51 @@ class Tile
 	private function GenerateRoute() {
 
 		switch ($this->generatedWith) {
+			
 			case '1':
-				// Growing Tree Algorithm
+				// Create array of cells and pass it a random cell. Cells are removed if completely used.
+				$cellPool[] = $this->cellArray[mt_rand(0, ($this->size - 1))][mt_rand(0, ($this->size - 1))];
+				// Create array of cells that have been visited. Once in the array they are not removed.
+				$visitedCells[] = $cellPool[0];
 
-				$cellPool = [];
-				$complete = false;
+				print "Starting Cell: ";
+				print "<pre>";
+				print_r($visitedCells[0]->returnCellPos());
+				print "</pre>";
 
-				// Select a single cell at random to start from
-				$cellPool[] = $this->cellArray[mt_rand(0, $this->size - 1)][mt_rand(0, $this->size - 1)];
-
-				while (count($cellPool) < count($this->cellArray)) {
-					
-					$currentCell = end($cellPool); // Take last cell added
-
+				while (!empty($cellPool)) {
+					$currentCell = end($cellPool);
 					$currentAdjCells = $currentCell->returnAdjacentCellsArray(); // Get list of adjacent cells
+					$adjCellFound = false;
 
-					$randAdjCellIndex = mt_rand(0, count($currentAdjCells) - 1);
-					$chosenAdjCell = $currentAdjCells[$randAdjCellIndex]; // Pick random adjacent cell
+					while (count($currentAdjCells) > 0 && $adjCellFound == false) {
+						//shuffle($currentAdjCells); // Shuffle array to randomize
 
-					while (in_array($chosenAdjCell, $cellPool)) {
-						unset($currentAdjCells[$randAdjCellIndex]);
-						$currentAdjCells = array_values($currentAdjCells);
-						$randAdjCellIndex = mt_rand(0, count($currentAdjCells) - 1);
-						$chosenAdjCell = $currentAdjCells[$randAdjCellIndex]; // Pick another random adjacent cell
+						$randIndex = mt_rand(0, count($currentAdjCells) - 1);
+						$chosenAdjCell = $currentAdjCells[$randIndex]; // Select the adjacent cell to use
+
+						if (!in_array($chosenAdjCell, $visitedCells)) { // Valid exit is found
+
+							$adjCellFound = true;
+							$currentCell->addExits(Position::calcDirection($currentCell->returnCellPos(), $chosenAdjCell->returnCellPos())); // Get the direction of exit and pass it to the selected cell.
+							$chosenAdjCell->addExits(Position::OppDir(Position::calcDirection($currentCell->returnCellPos(), $chosenAdjCell->returnCellPos()))); // Then set the opposite direction to the next cell.
+							$cellPool[] = $chosenAdjCell; // Add the chosen cell to the cell pool.
+							$visitedCells[] = $chosenAdjCell; // Add chosen cell to the visitedCells array.
+
+						} else {
+
+							unset($currentAdjCells[$randIndex]);
+							$currentAdjCells = array_values($currentAdjCells);
+
+						}
+					}
+
+					if ($adjCellFound == false) {
+						unset($cellPool[count($cellPool) - 1]);
+						$cellPool = array_values($cellPool);
 					}
 					
-					$currentCell->addExits(Position::calcDirection($currentCell->returnCellPos(), $chosenAdjCell->returnCellPos())); // Get the direction of exit and pass it to the selected cell.
-					$chosenAdjCell->addExits(Position::OppDir(Position::calcDirection($currentCell->returnCellPos(), $chosenAdjCell->returnCellPos())));
 
-					$cellPool[] = $chosenAdjCell; // Add the chosen cell to the cell pool.
 
 				}
 
