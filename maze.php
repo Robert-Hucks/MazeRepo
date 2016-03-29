@@ -140,6 +140,48 @@ class Maze
 		}
 	}
 
+	public function returnJSON() {
+
+		$data = [];
+
+		foreach($this->tileArray as $selectedTile){
+
+			$tileInfo = [];
+			$tileInfo['size'] = $selectedTile->returnSize();
+			$cellsInTile = $selectedTile->returnCellArray();
+
+			foreach ($cellsInTile as $rowOfCells) {
+
+				foreach ($rowOfCells as $indivCell) {
+
+					$cellInfo = [];
+					$cellInfo['position'] = ['row' => $indivCell->returnCellPos()->returnRow(), 'column' => $indivCell->returnCellPos()->returnCol()];
+
+					if ($indivCell->returnAvoid() == false) {
+
+						$cellInfo['Directions'] = $indivCell->returnExits();
+						$cellInfo['avoid'] = false;
+
+					} else {
+
+						$cellInfo['Directions'] = "";
+						$cellInfo['avoid'] = true;
+
+					}
+
+					$tileInfo[] = $cellInfo;
+
+				}
+				
+			}
+
+			$data[] = $tileInfo;
+		}
+
+		return json_encode($data);
+
+	}
+
 }
 
 echo "Maze class imported</br>";

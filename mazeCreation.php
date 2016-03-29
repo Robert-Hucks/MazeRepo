@@ -10,13 +10,13 @@
 
 	// Required variables
 	$methodToCreate = 1;
-
 	// 1 = Growing Tree Algorithm
+
 	$numOfTiles = 1;
 	$tileSize = 30; // Cant be < 2
-	//$avoidCellArray = [ [ [ 0, 0 ] ] ]; // Test
+	$avoidCellArray = [ [ [ 1, 1 ], [ 1, 2 ] ] ]; // Test
 	//$avoidCellArray = [ [ [ 0, 0 ] ], [ [ 1, 1] ] ]; // Test
-	$avoidCellArray = [ [ [  ] ] ]; // An array that contains arrays (one for each tile) that in turn contain arrays (hold Position objects for cell positions to be avoided by the algorithm)
+	//$avoidCellArray = [ [ [  ] ], [ [  ] ], [ [  ] ], [ [  ] ] ]; // An array that contains arrays (one for each tile) that in turn contain arrays (hold Position objects for cell positions to be avoided by the algorithm)
 
 	// Note on avoidCellArray: Despite being a list of cells that dont need to be used, the cells still need to be created to generate a complete and error free tile without any holes. This should only be used to make sure those cells are not included in the final display, nor in the creation of paths or cell adjacency arrays.
 
@@ -28,7 +28,12 @@
 	//$maze->dumpTileArray();
 	//$maze->returnTileArray();
 	$maze->drawMaze();
+	$jsonString = $maze->returnJSON();
 
+	print "JSON String (length " . strlen($jsonString) . "): ";
+	print "<pre>";
+	print_r($jsonString);
+	print "</pre>";
 
 	echo "Total execution time: " . (microtime(true) - $time_start) . "s";
 ?>
