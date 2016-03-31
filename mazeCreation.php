@@ -13,8 +13,9 @@
 	// 1 = Growing Tree Algorithm
 
 	$numOfTiles = 1;
-	$tileSize = 30; // Cant be < 2
-	$avoidCellArray = [ [ [ 1, 1 ], [ 1, 2 ] ] ]; // Test
+	$tileSize = 4; // Cant be < 2
+	//$avoidCellArray = [ [ [ ] ] ];
+	$avoidCellArray = [ [ [ 0, 0 ], [ 0, 2 ], [ 2, 0 ], [ 2, 2 ] ] ]; // Test
 	//$avoidCellArray = [ [ [ 0, 0 ] ], [ [ 1, 1] ] ]; // Test
 	//$avoidCellArray = [ [ [  ] ], [ [  ] ], [ [  ] ], [ [  ] ] ]; // An array that contains arrays (one for each tile) that in turn contain arrays (hold Position objects for cell positions to be avoided by the algorithm)
 
@@ -25,10 +26,10 @@
 	$maze = new Maze ($numOfTiles, $tileSize, $avoidCellArray, $methodToCreate);
 
 	// Display Maze
-	//$maze->dumpTileArray();
 	//$maze->returnTileArray();
 	$maze->drawMaze();
 	$jsonString = $maze->returnJSON();
+	file_put_contents("generatedMazes/" . date("Y-m-d") . "-" . time() . ".json", addslashes($jsonString));
 
 	print "JSON String (length " . strlen($jsonString) . "): ";
 	print "<pre>";

@@ -17,12 +17,13 @@
 
   	</head>
 
-  	<body onload="draw();">
+  	<body onload="pageLoad();">
 
 		<div id="stage">
 		  
 			<canvas id="ui-layer" width="480" height="480"></canvas>
-			<canvas id="game-layer" width="480" height="480"></canvas>
+			<canvas id="player-layer" width="480" height="480"></canvas>
+			<canvas id="maze-layer" width="480" height="480"></canvas>
 			<canvas id="background-layer" width="480" height="480"></canvas>
 
 		</div>

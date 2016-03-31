@@ -159,12 +159,12 @@ class Maze
 
 					if ($indivCell->returnAvoid() == false) {
 
-						$cellInfo['Directions'] = $indivCell->returnExits();
+						$cellInfo['directions'] = $indivCell->returnExits();
 						$cellInfo['avoid'] = false;
 
 					} else {
 
-						$cellInfo['Directions'] = "";
+						$cellInfo['directions'] = "";
 						$cellInfo['avoid'] = true;
 
 					}

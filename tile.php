@@ -67,6 +67,11 @@ class Tile
 	private function calcAdjCells($row, $col, $ref) {
 		// Case statement to work out what ~valid~ cells are around. (remove cells to avoid at the end of this process.)
 		$adjCellArr = [];
+
+		//print "Cell being worked on...";
+		//print "<pre>";
+		//print_r($this->cellArray[$row][$col]->returnCellPos());
+		//print "</pre>";
 		
 		// Vertical cells
 		switch ($row) {
@@ -108,14 +113,28 @@ class Tile
 
 		}		
 
-		for ($x = 0; $x < count($adjCellArr); $x++) {
+		$arrCount = count($adjCellArr);
+
+		for ($x = 0; $x < $arrCount; $x++) {
+
+			//print "Checking adjacent Cell (adjCellArr: " . $x . "/" . count($adjCellArr) . ")";
+			//print "<pre>";
+			//print_r($adjCellArr[$x]->returnCellPos());
+			//print "</pre>";
 
 			if ($adjCellArr[$x]->returnAvoid() == 1) {
+
+				//print "<pre>";
+				//print "Cell removed";
+				//print "</pre>";
 
 				unset($adjCellArr[$x]);
 
 			}
+			//print "------------------------------</br>";
 		}
+
+		//print "================================================</br>";
 
 		$adjCellArr = array_values($adjCellArr);
 
@@ -149,8 +168,18 @@ class Tile
 		switch ($this->generatedWith) {
 			
 			case '1':
-				// Create array of cells and pass it a random cell. Cells are removed if completely used.
-				$cellPool[] = $this->cellArray[mt_rand(0, ($this->size - 1))][mt_rand(0, ($this->size - 1))];
+				// Create array of cells. Cells are removed if completely used.
+				$cellPool = [];
+				
+				while (count($cellPool) == 0) {
+					$potentialCell = $this->cellArray[mt_rand(0, ($this->size - 1))][mt_rand(0, ($this->size - 1))];
+					if ($potentialCell->returnAvoid() == 0) {
+						$cellPool[] = $potentialCell; //pass it a random cell (make sure its not an avoided cell).
+					} else {
+						print "Cell avoided!";
+					}
+				}
+				
 				// Create array of cells that have been visited. Once in the array they are not removed.
 				$visitedCells[] = $cellPool[0];
 

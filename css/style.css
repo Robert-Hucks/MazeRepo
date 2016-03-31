@@ -1,19 +1,18 @@
-#stage {
-	width: 480px;
-	height: 480px;
-	position: relative;
-	border: 2px solid black;
-}
-
 canvas {
 	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 #ui-layer {
+	z-index: 4;
+}
+
+#player-layer {
 	z-index: 3;
 }
 
-#game-layer {
+#maze-layer {
 	z-index: 2;
 }
 
