@@ -42,7 +42,7 @@ function readJSON() {
 function adjustMazeCanvas(randCell) {
 	var xDif = (canvasMaze.width/2 - ((randCell["row"] * cellSize) + (cellSize * 0.5)));
 	var yDif = (canvasMaze.height/2 - ((randCell["col"] * cellSize) + (cellSize * 0.5)));
-	ctxMaze.translate(xDif, yDif);
+	ctxMaze.translate(Math.round(xDif), Math.round(yDif));
 };
 
 
@@ -132,23 +132,24 @@ function drawCell(canvas, ctx, startingX, startingY, size, dirString) {
 
 	cellOffset = 1;
 	// Cell Base
-	ctx.fillStyle = "rgb(248, 250, 215)";
+	//ctx.fillStyle = "rgb(248, 250, 215)";
+	ctx.fillStyle = "rgb(0, 0, 215)";
 	ctx.fillRect(startingX, startingY, size, size);
 
 	ctx.fillStyle = "rgb(0, 0, 0)";
 	//// Corner Pieces
 	// Left Top
 	//canvas.fillStyle = "rgba(255, 0, 0)";
-	ctx.fillRect(startingX, startingY, size*0.125 - cellOffset, size*0.125 - 1);
+	ctx.fillRect(Math.round(startingX), Math.round(startingY), Math.round(size*0.125 - cellOffset), Math.round(size*0.125 - cellOffset));
 	// Left Bottom
 	//canvas.fillStyle = "rgba(255, 0, 0)";
-	ctx.fillRect(startingX, ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - 1);
+	ctx.fillRect(Math.round(startingX), Math.round(((startingY + size) - (size*0.125)) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.125 - cellOffset));
 	// Right Top
 	//canvas.fillStyle = "rgba(255, 0, 0)";
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, startingY, size*0.125 - cellOffset, size*0.125 - 1);
+	ctx.fillRect(Math.round(((startingX + size) - (size*0.125)) + cellOffset), Math.round(startingY), Math.round(size*0.125 - cellOffset), Math.round(size*0.125 - cellOffset));
 	// Right Bottom
 	//canvas.fillStyle = "rgba(255, 0, 0)";
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - 1);
+	ctx.fillRect(Math.round(((startingX + size) - (size*0.125)) + cellOffset), Math.round(((startingY + size) - (size*0.125)) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.125 - cellOffset));
 
 	switch(dirString) {
 		case "N":
@@ -236,55 +237,43 @@ function drawCell(canvas, ctx, startingX, startingY, size, dirString) {
 
 function drawNorthWall(canvas, ctx, startingX, startingY, size, cellOffset) {
 	// First square along
-	ctx.fillRect((startingX + (size*0.25)), startingY, size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect((startingX + (size*0.25)) - (size*0.125 - cellOffset), startingY, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.125) + cellOffset), Math.round(startingY), Math.round(size*0.25 - cellOffset*2), Math.round(size*0.125 - cellOffset));
 	// Second square along
-	ctx.fillRect((startingX + (size*0.5)), startingY, size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect((startingX + (size*0.5)) - (size*0.125 - cellOffset), startingY, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.375) + cellOffset), Math.round(startingY), Math.round(size*0.25 - cellOffset*2), Math.round(size*0.125 - cellOffset));
 	// Third square along
-	ctx.fillRect((startingX + (size*0.75)), startingY, size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect((startingX + (size*0.75)) - (size*0.125 - cellOffset), startingY, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.625) + cellOffset), Math.round(startingY), Math.round(size*0.25 - cellOffset*2), Math.round(size*0.125 - cellOffset));
 };
 
 function drawEastWall(canvas, ctx, startingX, startingY, size, cellOffset) {
 	// First square along
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, (startingY + size*0.25), size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, ((startingY + size*0.25) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.875) + cellOffset), Math.round((startingY + size*0.125) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.25 - cellOffset*2));
 	// Second square along
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, (startingY + size*0.5), size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, ((startingY + size*0.5) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.875) + cellOffset), Math.round((startingY + size*0.375) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.25 - cellOffset*2));
 	// Third square along
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, (startingY + size*0.75), size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect(((startingX + size) - (size*0.125)) + cellOffset, ((startingY + size*0.75) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.875) + cellOffset), Math.round((startingY + size*0.625) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.25 - cellOffset*2));
 };
 
 function drawSouthWall(canvas, ctx, startingX, startingY, size, cellOffset) {
 	// First square along
-	ctx.fillRect((startingX + (size*0.25)), ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect((startingX + (size*0.25)) - (size*0.125 - 1), ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.125) + cellOffset), Math.round((startingY + size*0.875) + cellOffset), Math.round(size*0.25 - cellOffset*2), Math.round(size*0.125 - cellOffset));
 	// Second square along
-	ctx.fillRect((startingX + (size*0.5)), ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect((startingX + (size*0.5)) - (size*0.125 - 1), ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.375) + cellOffset), Math.round((startingY + size*0.875) + cellOffset), Math.round(size*0.25 - cellOffset*2), Math.round(size*0.125 - cellOffset));
 	// Third square along
-	ctx.fillRect((startingX + (size*0.75)), ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect((startingX + (size*0.75)) - (size*0.125 - 1), ((startingY + size) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round((startingX + size*0.625) + cellOffset), Math.round((startingY + size*0.875) + cellOffset), Math.round(size*0.25 - cellOffset*2), Math.round(size*0.125 - cellOffset));
 };
 
 function drawWestWall(canvas, ctx, startingX, startingY, size, cellOffset) {
 	// First square along
-	ctx.fillRect(startingX, (startingY + size*0.25), size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect(startingX, ((startingY + size*0.25) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round(startingX), Math.round((startingY + size*0.125) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.25 - cellOffset*2));
 	// Second square along
-	ctx.fillRect(startingX, (startingY + size*0.5), size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect(startingX, ((startingY + size*0.5) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round(startingX), Math.round((startingY + size*0.375) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.25 - cellOffset*2));
 	// Third square along
-	ctx.fillRect(startingX, (startingY + size*0.75), size*0.125 - cellOffset, size*0.125 - cellOffset);
-	ctx.fillRect(startingX, ((startingY + size*0.75) - (size*0.125)) + cellOffset, size*0.125 - cellOffset, size*0.125 - cellOffset);
+	ctx.fillRect(Math.round(startingX), Math.round((startingY + size*0.625) + cellOffset), Math.round(size*0.125 - cellOffset), Math.round(size*0.25 - cellOffset*2));
 };
 
 function drawCenter(canvas, ctx, startingX, startingY, size, cellOffset) {
 	// Middle square
-	ctx.fillRect((startingX + size*0.125) + cellOffset, (startingY + size*0.125) + cellOffset, size*0.75 - cellOffset*2, size*0.75 - cellOffset*2);
+	ctx.fillRect(Math.round((startingX + size*0.125) + cellOffset), Math.round((startingY + size*0.125) + cellOffset), Math.round(size*0.75 - cellOffset*2), Math.round(size*0.75 - cellOffset*2));
 };
 
 
@@ -298,7 +287,7 @@ function drawCenter(canvas, ctx, startingX, startingY, size, cellOffset) {
 function drawPlayer(facing) {
 	ctxPlayer.fillStyle = "rgb(255, 0, 0)";
 	ctxPlayer.beginPath();
-	ctxPlayer.arc(canvasPlayer.width/2, canvasPlayer.height/2, 20, 0, 2*Math.PI);
+	ctxPlayer.arc(Math.round(canvasPlayer.width/2), Math.round(canvasPlayer.height/2), 20, 0, 2*Math.PI);
 	ctxPlayer.fill();
 	ctxPlayer.stroke();
 
