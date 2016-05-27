@@ -14,8 +14,8 @@
 
 	$numOfTiles = 1;
 	$tileSize = 4; // Cant be < 2
-	//$avoidCellArray = [ [ [ ] ] ];
-	$avoidCellArray = [ [ [ 0, 0 ], [ 0, 2 ], [ 2, 0 ], [ 2, 2 ] ] ]; // Test
+	$avoidCellArray = [ [ [ ] ] ];
+	//$avoidCellArray = [ [ [ 0, 0 ], [ 0, 2 ], [ 2, 0 ], [ 2, 2 ] ] ]; // Test
 	//$avoidCellArray = [ [ [ 0, 0 ] ], [ [ 1, 1] ] ]; // Test
 	//$avoidCellArray = [ [ [  ] ], [ [  ] ], [ [  ] ], [ [  ] ] ]; // An array that contains arrays (one for each tile) that in turn contain arrays (hold Position objects for cell positions to be avoided by the algorithm)
 
@@ -29,12 +29,14 @@
 	//$maze->returnTileArray();
 	$maze->drawMaze();
 	$jsonString = $maze->returnJSON();
-	file_put_contents("generatedMazes/" . date("Y-m-d") . "-" . time() . ".json", addslashes($jsonString));
 
-	print "JSON String (length " . strlen($jsonString) . "): ";
-	print "<pre>";
-	print_r($jsonString);
-	print "</pre>";
+	echo $jsonString;
+	//file_put_contents("generatedMazes/" . date("Y-m-d") . "-" . time() . ".json", addslashes($jsonString));
 
-	echo "Total execution time: " . (microtime(true) - $time_start) . "s";
+	//print "JSON String (length " . strlen($jsonString) . "): ";
+	//print "<pre>";
+	//print_r($jsonString);
+	//print "</pre>";
+
+	//echo "Total execution time: " . (microtime(true) - $time_start) . "s";
 ?>
