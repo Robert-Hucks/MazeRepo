@@ -183,10 +183,10 @@ class Tile
 				// Create array of cells that have been visited. Once in the array they are not removed.
 				$visitedCells[] = $cellPool[0];
 
-				print "Starting Cell: ";
-				print "<pre>";
-				print_r($visitedCells[0]->returnCellPos());
-				print "</pre>";
+				//print "Starting Cell: ";
+				//print "<pre>";
+				//print_r($visitedCells[0]->returnCellPos());
+				//print "</pre>";
 
 				while (!empty($cellPool)) {
 					$currentCell = end($cellPool);
@@ -276,6 +276,6 @@ class Tile
 
 }
 
-echo "Tile class imported</br>";
+//echo "Tile class imported</br>";
 
 ?>
