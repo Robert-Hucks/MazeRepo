@@ -76,6 +76,6 @@ class Cell
 	}
 }
 
-echo "Cell class imported</br>";
+//echo "Cell class imported</br>";
 
 ?>
