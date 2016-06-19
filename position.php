@@ -95,6 +95,6 @@ class Position
 	}
 }
 
-echo "Position class imported</br>";
+//echo "Position class imported</br>";
 
 ?>
