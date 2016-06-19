@@ -184,6 +184,6 @@ class Maze
 
 }
 
-echo "Maze class imported</br>";
+//echo "Maze class imported</br>";
 
 ?>
